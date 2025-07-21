@@ -405,9 +405,9 @@ def load_video(meta_batch=None, unique_id=None, memory_limit_mb=None, vae=None,
         "loaded_height": new_height,
     }
     if vae is None:
-        return (images, len(images), audio, video_info, video)
+        return (images, len(images), audio, video_info)
     else:
-        return ({"samples": images}, len(images), audio, video_info, video)
+        return ({"samples": images}, len(images), audio, video_info)
 
 
 
@@ -450,7 +450,8 @@ class LoadVideoUpload:
 
     def load_video(self, **kwargs):
         kwargs['video'] = folder_paths.get_annotated_filepath(strip_path(kwargs['video']))
-        return load_video(**kwargs)
+        video_path = kwargs['video']
+        return load_video(**kwargs) + (video_path,)
 
     @classmethod
     def IS_CHANGED(s, video, **kwargs):
